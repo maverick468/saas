@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maverick SaaS Showcase</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      color: #eee;
+      overflow-x: hidden;
+      background: linear-gradient(270deg, #0f0c29, #302b63, #24243e, #0f0c29);
+      background-size: 800% 800%;
+      animation: gradientMove 20s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* === Splash Screen === */
+    .splash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #0a0f2c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 1s ease, visibility 1s ease;
+    }
+    .splash.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .splash h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #00f2fe, #4facfe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200%;
+      animation: textGlow 2s ease-in-out infinite;
+    }
+    .splash p {
+      font-size: 1rem;
+      color: #b5dfff;
+      margin-top: 12px;
+      letter-spacing: 2px;
+      opacity: 0.9;
+    }
+    .splash-loader {
+      margin-top: 30px;
+      width: 60px; height: 60px;
+      border: 5px solid rgba(0,255,255,0.3);
+      border-top: 5px solid #0ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes textGlow {
+      0%, 100% { filter: drop-shadow(0 0 6px #0ff); }
+      50% { filter: drop-shadow(0 0 14px #0ff); }
+    }
+
+    /* Intro Animations */
+    .fade-in {
+      opacity: 0;
+      transform: scale(0.95);
+      animation: fadeInScale 1.2s forwards;
+      animation-delay: 0.3s;
+    }
+    @keyframes fadeInScale {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #00f2fe, #4facfe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-logo svg {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      fill: url(#grad1);
+    }
+
+    .hero iframe {
+      width: 90%;
+      max-width: 800px;
+      height: 450px;
+      border-radius: 16px;
+      border: 2px solid rgba(255,255,255,0.2);
+      box-shadow: 0 0 25px rgba(0, 200, 255, 0.4);
+      margin-bottom: 25px;
+    }
+    .hero h1 {
+      font-size: 2.6rem;
+      margin: 0;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      margin-top: 12px;
+      color: #ccc;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px 60px;
+    }
+
+    /* Card Styles */
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      opacity: 0;
+      transform: translateY(40px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+    }
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 0 25px rgba(0, 200, 255, 0.4);
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(0, 200, 255, 0.6);
+      animation: float 3s ease-in-out infinite;
+      object-fit: cover;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: #ccc;
+    }
+    .price {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #00f2fe;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 15px rgba(0, 200, 255, 0.6);
+    }
+
+    .btn.pay {
+      background: linear-gradient(135deg, #ff6a00, #ee0979);
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Splash Screen -->
+  <div class="splash" id="splash">
+    <h1>Maverick AI</h1>
+    <p>Loading the Future...</p>
+    <div class="splash-loader"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero fade-in">
+    <div class="brand-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#00f2fe;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#4facfe;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path d="M12 2L2 7l10 5 10-5-10-5zm0 7.3L4 7v10l8 4.3 8-4.3V7l-8 2.3z"/>
+      </svg>
+      Maverick
+    </div>
+
+    <!-- YouTube Video -->
+    <iframe width="914" height="514" 
+      src="https://www.youtube.com/embed/EK5iry7uuuQ" 
+      title="Software Gonna be released on September 18, 2025. @maverickacademy"
+      frameborder="0" 
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      referrerpolicy="strict-origin-when-cross-origin" 
+      allowfullscreen>
+    </iframe>
+
+    <h1>Maverick SaaS Showcase</h1>
+    <p>Explore our AI-powered suite of Maverick tools, built for the future.</p>
+  </div>
+
+  <!-- SaaS Cards -->
+  <div class="grid">
+    <div class="card">
+      <img src="logo.png" alt="Maverick Lancer Logo" class="logo" />
+      <div class="title">Maverick Lancer</div>
+      <div class="desc">A powerful freelancing platform that connects top talent with businesses worldwide, streamlining hiring and project management.</div>
+      <div class="price">$29/month</div>
+      <div class="btn-group">
+        <a href="#" class="btn">Get</a>
+        <a href="#" class="btn pay">Pay</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="logo.png" alt="MaverickAd Proxy Logo" class="logo" />
+      <div class="title">MaverickAd Proxy</div>
+      <div class="desc">Next-level ad proxy solution ensuring privacy, optimization, and seamless campaign delivery for digital marketers.</div>
+      <div class="price">$19/month</div>
+      <div class="btn-group">
+        <a href="#" class="btn">Get</a>
+        <a href="#" class="btn pay">Pay</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="logo.png" alt="Maverick Academy Logo" class="logo" />
+      <div class="title">Maverick Academy</div>
+      <div class="desc">An online academy delivering cutting-edge courses, mentoring, and tools for career growth and digital skills mastery.</div>
+      <div class="price">Free</div>
+      <div class="btn-group">
+        <a href="#" class="btn">Get</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="logo.png" alt="Maverick Portfolio Logo" class="logo" />
+      <div class="title">Maverick Portfolio</div>
+      <div class="desc">A sleek and customizable portfolio builder to showcase your work, achievements, and projects with professional impact.</div>
+      <div class="price">$15/month</div>
+      <div class="btn-group">
+        <a href="#" class="btn">Get</a>
+        <a href="#" class="btn pay">Pay</a>
+      </div>
+    </div>
+
+    <!-- NEW FX Journal SaaS -->
+    <div class="card">
+      <img src="logo.png" alt="Maverick FX Journal Logo" class="logo" />
+      <div class="title">Maverick FX Journal</div>
+      <div class="desc">A smart trading journal that helps forex traders track, analyze, and optimize their strategies with AI-powered insights.</div>
+      <div class="price">$25/month</div>
+      <div class="btn-group">
+        <a href="#" class="btn">Get</a>
+        <a href="#" class="btn pay">Pay</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Show splash only on first visit
+    window.addEventListener("DOMContentLoaded", () => {
+      const splash = document.getElementById("splash");
+      const hasVisited = localStorage.getItem("visited");
+
+      if (!hasVisited) {
+        // First visit -> show splash
+        setTimeout(() => {
+          splash.classList.add("hidden");
+          localStorage.setItem("visited", "true");
+        }, 3000); // splash duration
+      } else {
+        // Already visited -> hide splash instantly
+        splash.classList.add("hidden");
+      }
+    });
+
+    // Scroll Animation for Cards
+    const cards = document.querySelectorAll(".card");
+    const revealOnScroll = () => {
+      const triggerBottom = window.innerHeight * 0.85;
+      cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        if (cardTop < triggerBottom) {
+          card.classList.add("visible");
+        }
+      });
+    };
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("load", revealOnScroll);
+  </script>
+</body>
+</html>
